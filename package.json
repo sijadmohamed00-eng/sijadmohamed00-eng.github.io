@@ -1,15 +1,29 @@
 {
-  "name": "iqr-website",
-  "version": "1.0.0",
+  "name": "iqrhq-website",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "next": "14.2.0",
-    "react": "18.3.0",
-    "react-dom": "18.3.0"
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "framer-motion": "latest",
+    "three": "latest",
+    "@react-three/fiber": "latest",
+    "@react-three/drei": "latest"
+  },
+  "devDependencies": {
+    "typescript": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "autoprefixer": "latest",
+    "postcss": "latest",
+    "tailwindcss": "latest"
   }
 }
