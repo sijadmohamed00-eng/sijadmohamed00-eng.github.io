@@ -53,7 +53,9 @@ export default function ContactClient() {
   const submit = (e) => {
     e.preventDefault();
     setStatus("loading");
-    setTimeout(() => setStatus("success"), 1500);
+    const msg = `مرحبا IQR،%0aاسمي: ${form.name}%0aرقمي: ${form.phone}%0aالمدينة: ${form.city || "غير محدد"}%0aنوع المطعم: ${form.type || "غير محدد"}%0aرسالتي: ${form.message || "لا توجد رسالة إضافية"}`;
+    window.open(`https://wa.me/9647734383431?text=${msg}`, "_blank");
+    setTimeout(() => setStatus("success"), 800);
   };
 
   const channels = [

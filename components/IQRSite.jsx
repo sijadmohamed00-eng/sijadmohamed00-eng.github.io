@@ -41,6 +41,8 @@ const globalStyles = `
 
   @media(max-width:900px) {
     .nav-links-wrap { display:none !important; }
+    .mobile-menu-btn { display:flex !important; }
+    .mobile-nav { display:flex !important; }
     .problem-grid-inner { grid-template-columns:1fr !important; }
     .solution-split-grid { grid-template-columns:1fr !important; }
     .services-grid-inner { grid-template-columns:1fr !important; }
@@ -49,6 +51,278 @@ const globalStyles = `
     .footer-grid-inner { grid-template-columns:1fr !important; }
   }
 `;
+
+// ─── CURSOR TRAIL ──────────────────────────────────────────────────────────────
+function CursorTrail() {
+  const curRef = useRef(null);
+  const ringRef = useRef(null);
+  const trailRef = useRef([]);
+  const posRef = useRef({mx:0,my:0,rx:0,ry:0});
+
+  useEffect(() => {
+    const onMove = (e) => {
+      const {clientX: x, clientY: y} = e;
+      posRef.current.mx = x;
+      posRef.current.my = y;
+      if (curRef.current) {
+        curRef.current.style.left = x + "px";
+        curRef.current.style.top = y + "px";
+      }
+      // Spawn trail dot
+      const dot = document.createElement("div");
+      dot.style.cssText = `position:fixed;pointer-events:none;z-index:9998;width:6px;height:6px;border-radius:50%;background:rgba(255,45,122,0.7);left:${x}px;top:${y}px;transform:translate(-50%,-50%);animation:trailFade .6s forwards;`;
+      document.body.appendChild(dot);
+      setTimeout(() => dot.remove(), 600);
+    };
+    document.addEventListener("mousemove", onMove);
+    const loop = () => {
+      const p = posRef.current;
+      p.rx += (p.mx - p.rx) * .1;
+      p.ry += (p.my - p.ry) * .1;
+      if (ringRef.current) {
+        ringRef.current.style.left = p.rx + "px";
+        ringRef.current.style.top = p.ry + "px";
+      }
+      requestAnimationFrame(loop);
+    };
+    loop();
+    return () => document.removeEventListener("mousemove", onMove);
+  }, []);
+
+  return (
+    <>
+      <div ref={curRef} style={{position:"fixed",zIndex:9999,pointerEvents:"none",borderRadius:"50%",width:10,height:10,background:"#ff2d7a",transform:"translate(-50%,-50%)",transition:"width .15s,height .15s"}} />
+      <div ref={ringRef} style={{position:"fixed",zIndex:9999,pointerEvents:"none",borderRadius:"50%",width:38,height:38,border:"1px solid rgba(255,45,122,.5)",transform:"translate(-50%,-50%)",transition:"width .3s,height .3s"}} />
+    </>
+  );
+}
+
+// ─── 3D PARTICLE BACKGROUND ────────────────────────────────────────────────────
+function ParticleBackground() {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let W = canvas.width = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+    let mx = 0, my = 0;
+    let t = 0;
+
+    const N = 120;
+    const particles = Array.from({length:N}, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      z: Math.random() * 3 + 0.5,
+      vx: (Math.random()-.5)*.3,
+      vy: (Math.random()-.5)*.3,
+      color: Math.random() > .7 ? "#ff2d7a" : Math.random() > .5 ? "#00c3ff" : "rgba(240,244,255,.3)",
+      r: Math.random() * 1.5 + .5,
+    }));
+
+    const onMove = (e) => { mx = e.clientX; my = e.clientY; };
+    window.addEventListener("mousemove", onMove);
+    const onResize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+    window.addEventListener("resize", onResize);
+
+    let raf;
+    const draw = () => {
+      t += .005;
+      ctx.clearRect(0, 0, W, H);
+
+      // Draw grid lines
+      ctx.strokeStyle = "rgba(10,22,40,.6)";
+      ctx.lineWidth = 1;
+      for (let x = 0; x < W; x += 80) {
+        ctx.beginPath(); ctx.moveTo(x + Math.sin(t + x*.01)*5, 0); ctx.lineTo(x + Math.sin(t + x*.01)*5, H); ctx.stroke();
+      }
+      for (let y = 0; y < H; y += 80) {
+        ctx.beginPath(); ctx.moveTo(0, y + Math.cos(t + y*.01)*5); ctx.lineTo(W, y + Math.cos(t + y*.01)*5); ctx.stroke();
+      }
+
+      particles.forEach((p, i) => {
+        // Mouse parallax
+        const dx = (mx - W/2) * .003 * p.z;
+        const dy = (my - H/2) * .003 * p.z;
+        p.x += p.vx + dx * .01;
+        p.y += p.vy + dy * .01;
+        if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+
+        const alpha = (.3 + Math.sin(t * 2 + i) * .2) * p.z;
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = p.color === "#ff2d7a" ? 12 : 6;
+        ctx.shadowColor = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * p.z, 0, Math.PI*2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Connect nearby
+        particles.forEach((p2, j) => {
+          if (j <= i) return;
+          const ddx = p.x - p2.x, ddy = p.y - p2.y;
+          const dist = Math.sqrt(ddx*ddx + ddy*ddy);
+          if (dist < 120) {
+            ctx.globalAlpha = (1 - dist/120) * .15;
+            ctx.strokeStyle = "#ff2d7a";
+            ctx.lineWidth = .5;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+          }
+        });
+      });
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("mousemove", onMove); window.removeEventListener("resize", onResize); };
+  }, []);
+
+  return <canvas ref={canvasRef} style={{position:"fixed",top:0,left:0,width:"100%",height:"100%",zIndex:0,pointerEvents:"none"}} />;
+}
+
+// ─── USE INTERSECTION OBSERVER ─────────────────────────────────────────────────
+function useVisible(threshold = .15) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, {threshold});
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, visible];
+}
+
+// ─── 3D CARD ───────────────────────────────────────────────────────────────────
+function Card3D({children, style, className}) {
+  const ref = useRef(null);
+  const onMove = (e) => {
+    const card = ref.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - .5;
+    const y = (e.clientY - rect.top) / rect.height - .5;
+    card.style.transform = `perspective(800px) rotateY(${x*20}deg) rotateX(${-y*20}deg) scale(1.04)`;
+    card.style.boxShadow = `${-x*20}px ${-y*20}px 40px rgba(255,45,122,.2), 0 0 60px rgba(255,45,122,.08)`;
+  };
+  const onLeave = () => {
+    const card = ref.current;
+    if (!card) return;
+    card.style.transform = "perspective(800px) rotateY(0deg) rotateX(0deg) scale(1)";
+    card.style.boxShadow = "none";
+  };
+  return (
+    <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} className={className}
+      style={{transition:"transform .1s ease, box-shadow .2s ease", transformStyle:"preserve-3d", cursor:"none", ...style}}>
+      {children}
+    </div>
+  );
+}
+
+// ─── COUNTER ───────────────────────────────────────────────────────────────────
+function Counter({target, suffix=""}) {
+  const [val, setVal] = useState(0);
+  const [ref, visible] = useVisible(.3);
+  useEffect(() => {
+    if (!visible) return;
+    let cur = 0;
+    const step = target / 50;
+    const id = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      setVal(Math.round(cur));
+      if (cur >= target) clearInterval(id);
+    }, 30);
+    return () => clearInterval(id);
+  }, [visible, target]);
+  return <span ref={ref}>{val}{suffix}</span>;
+}
+
+// ─── SOCIAL ICONS SVG ─────────────────────────────────────────────────────────
+const WhatsAppIcon = ({size=20,color="#fff"}) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+);
+const InstagramIcon = ({size=20,color="#fff"}) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+  </svg>
+);
+const TikTokIcon = ({size=20,color="#fff"}) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z"/>
+  </svg>
+);
+const FacebookIcon = ({size=20,color="#fff"}) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+  </svg>
+);
+
+// ─── NAV ──────────────────────────────────────────────────────────────────────
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+  const pageLinks = [{h:"/about/",l:"من نحن"},{h:"/blog/",l:"المدونة"},{h:"/contact/",l:"تواصل"}];
+  const scrollLinks = [{h:"#problem",l:"التحدي"},{h:"#solution",l:"الحل"},{h:"#services",l:"الخدمات"},{h:"#results",l:"النتائج"}];
+  return (
+    <>
+    <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:100,padding:"16px 32px",display:"flex",alignItems:"center",justifyContent:"space-between",
+      background:scrolled||mobileOpen?"rgba(0,8,20,.97)":"transparent",backdropFilter:scrolled||mobileOpen?"blur(24px)":"none",
+      borderBottom:scrolled||mobileOpen?"1px solid rgba(255,45,122,.1)":"none",transition:"all .4s ease",direction:"rtl"}}>
+      <a href="/" style={{fontFamily:"Space Mono",fontSize:20,fontWeight:700,color:"#f0f4ff",letterSpacing:".08em",textDecoration:"none",display:"flex",alignItems:"center",gap:10,cursor:"none"}}>
+        <span style={{width:8,height:8,background:"#ff2d7a",borderRadius:"50%",animation:"blink 2s infinite"}}/>
+        IQR<span style={{color:"#ff2d7a",fontSize:13,fontWeight:400,fontFamily:"Cairo",marginRight:6}}>لإدارة المطاعم</span>
+      </a>
+      <div className="nav-links-wrap" style={{display:"flex",alignItems:"center",gap:8}}>
+        {pageLinks.map(({h,l}) => (
+          <a key={h} href={h} style={{fontFamily:"Cairo",fontSize:13,fontWeight:700,color:"#ff2d7a",textDecoration:"none",letterSpacing:".06em",cursor:"none",transition:"all .25s",padding:"7px 16px",border:"1px solid rgba(255,45,122,.35)",borderRadius:6,background:"rgba(255,45,122,.07)"}}
+            onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,45,122,.18)";e.currentTarget.style.borderColor="#ff2d7a";e.currentTarget.style.transform="translateY(-1px)"}}
+            onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,45,122,.07)";e.currentTarget.style.borderColor="rgba(255,45,122,.35)";e.currentTarget.style.transform=""}}>{l}</a>
+        ))}
+        <span style={{width:1,height:18,background:"rgba(255,255,255,.1)",display:"inline-block",margin:"0 12px"}}/>
+        {scrollLinks.map(({h,l}) => (
+          <a key={h} href={h} style={{fontFamily:"Cairo",fontSize:13,fontWeight:600,color:"rgba(240,244,255,.45)",textDecoration:"none",letterSpacing:".06em",cursor:"none",transition:"color .25s",padding:"4px 8px"}}
+            onMouseEnter={e=>e.target.style.color="#f0f4ff"} onMouseLeave={e=>e.target.style.color="rgba(240,244,255,.45)"}>{l}</a>
+        ))}
+      </div>
+      <div style={{display:"flex",gap:10,alignItems:"center"}}>
+        <a href="/dashboard" style={{fontFamily:"Cairo",fontSize:13,fontWeight:700,padding:"10px 20px",background:"transparent",color:"rgba(240,244,255,.6)",border:"1px solid rgba(255,255,255,.1)",borderRadius:4,cursor:"none",letterSpacing:".06em",textDecoration:"none",transition:"all .2s"}}
+          onMouseEnter={e=>{e.currentTarget.style.borderColor="#00c3ff";e.currentTarget.style.color="#00c3ff"}}
+          onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,.1)";e.currentTarget.style.color="rgba(240,244,255,.6)"}}>
+          ⬡ الداشبورد
+        </a>
+        {/* زر الموبايل */}
+        <button className="mobile-menu-btn" onClick={()=>setMobileOpen(o=>!o)} style={{display:"none",flexDirection:"column",gap:5,background:"transparent",border:"1px solid rgba(255,255,255,.15)",borderRadius:8,padding:"10px 12px",cursor:"pointer"}}>
+          <span style={{width:20,height:2,background:mobileOpen?"#ff2d7a":"#f0f4ff",transition:"all .3s",transform:mobileOpen?"rotate(45deg) translate(5px,5px)":"none",display:"block"}}/>
+          <span style={{width:20,height:2,background:"#f0f4ff",opacity:mobileOpen?0:1,transition:"all .2s",display:"block"}}/>
+          <span style={{width:20,height:2,background:mobileOpen?"#ff2d7a":"#f0f4ff",transition:"all .3s",transform:mobileOpen?"rotate(-45deg) translate(5px,-5px)":"none",display:"block"}}/>
+        </button>
+      </div>
+    </nav>
+    {/* Mobile Menu */}
+    {mobileOpen && (
+      <div className="mobile-nav" style={{display:"none",position:"fixed",top:"65px",left:0,right:0,zIndex:99,background:"rgba(0,8,20,.97)",backdropFilter:"blur(24px)",borderBottom:"1px solid rgba(255,45,122,.15)",padding:"20px 24px",flexDirection:"column",gap:12,direction:"rtl",animation:"fadeIn .2s ease"}}>
+        {pageLinks.map(({h,l}) => (
+          <a key={h} href={h} onClick={()=>setMobileOpen(false)} style={{fontFamily:"Cairo",fontSize:15,fontWeight:700,color:"#ff2d7a",textDecoration:"none",padding:"12px 16px",border:"1px solid rgba(255,45,122,.3)",borderRadius:8,background:"rgba(255,45,122,.07)",textAlign:"right"}}>{l}</a>
+        ))}
+        <div style={{height:1,background:"rgba(255,255,255,.07)",margin:"4px 0"}}/>
+        {scrollLinks.map(({h,l}) => (
+          <a key={h} href={h} onClick={()=>setMobileOpen(false)} style={{fontFamily:"Cairo",fontSize:14,fontWeight:600,color:"rgba(240,244,255,.55)",textDecoration:"none",padding:"10px 16px",borderRadius:8,background:"rgba(255,255,255,.03)",textAlign:"right"}}>{l}</a>
+        ))}
+        <div style={{height:1,background:"rgba(255,255,255,.07)",margin:"4px 0"}}/>
+        <a href="/dashboard" onClick={()=>setMobileOpen(false)} style={{fontFamily:"Cairo",fontSize:14,fontWeight:700,color:"#00c3ff",textDecoration:"none",padding:"12px 16px",border:"1px solid rgba(0,195,255,.25)",borderRadius:8,background:"rgba(0,195,255,.07)",textAlign:"right"}}>⬡ الداشبورد</a>
+      </div>
+    )}
+    </>
+  );
+}
 
 // ─── CURSOR TRAIL ──────────────────────────────────────────────────────────────
 function CursorTrail() {
