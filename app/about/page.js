@@ -1,6 +1,8 @@
-export const dynamic = 'force-static';
+export const dynamic = 'force-static'; // هذا السطر سيحل المشكلة فوراً
+
 export const metadata = {
-  title: "من نحن | IQR لإدارة المطاعم في العراق",
-  description: "تعرف على فريق IQR — الشركة الأولى لإدارة وتطوير المطاعم في العراق. قصتنا وقيمنا ورؤيتنا.",
+  title: "تواصل معنا | IQR لإدارة وتطوير المطاعم",
+  description: "نحن هنا لمساعدتك في تطوير مطعمك. تواصل مع فريق IQR و Oxaam في بغداد.",
 };
-export { default } from "./AboutClient";
+
+export { default } from "./ContactClient";
