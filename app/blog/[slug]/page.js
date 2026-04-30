@@ -1,5 +1,9 @@
 // app/blog/[slug]/page.js
 
+import dynamic from "next/dynamic";
+
+const BlogPostClient = dynamic(() => import("./BlogPostClient"), { ssr: false });
+
 export async function generateStaticParams() {
   return [
     { slug: "inventory-waste" },
@@ -12,6 +16,5 @@ export async function generateStaticParams() {
 }
 
 export default function Page({ params }) {
-  const BlogPostClient = require("./BlogPostClient").default;
   return <BlogPostClient params={params} />;
 }
