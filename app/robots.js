@@ -1,6 +1,5 @@
-export default function robots() {
-  return {
-    rules: { userAgent: "*", allow: "/", disallow: "/dashboard/" },
-    sitemap: "https://iqrhq.me/sitemap.xml",
-  };
-}
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+
+Sitemap: https://iqrhq.me/sitemap.xml
