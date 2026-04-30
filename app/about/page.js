@@ -1,8 +1,8 @@
-export const dynamic = 'force-static'; // هذا السطر سيحل المشكلة فوراً
-
+export const dynamic = 'force-static';
 export const metadata = {
-  title: "تواصل معنا | IQR لإدارة وتطوير المطاعم",
-  description: "نحن هنا لمساعدتك في تطوير مطعمك. تواصل مع فريق IQR و Oxaam في بغداد.",
+  title: "من نحن | IQR لإدارة المطاعم في العراق",
+  description: "تعرف على فريق IQR — الشركة الأولى لإدارة وتطوير المطاعم في العراق.",
 };
 
-export { default } from "./ContactClient";
+// التأكد من استدعاء المكون الصحيح لصفحة About
+export { default } from "./AboutClient";
