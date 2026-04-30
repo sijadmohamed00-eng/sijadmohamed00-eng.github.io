@@ -11,19 +11,11 @@ export async function generateStaticParams() {
 
 export default function Page({ params }) {
   return (
-    <div style={{
-      backgroundColor: '#000814',
-      color: '#fff',
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontFamily: 'sans-serif',
-      direction: 'rtl'
-    }}>
-      <h1>مقال: {params.slug}</h1>
-      <a href="/blog" style={{color: '#ff2d7a', marginTop: '20px'}}>العودة للمدونة</a>
+    <div style={{ backgroundColor: '#000814', color: '#fff', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', direction: 'rtl' }}>
+      <div>
+        <h1>مقال: {params.slug}</h1>
+        <a href="/blog" style={{ color: '#ff2d7a' }}>العودة للمدونة</a>
+      </div>
     </div>
   );
 }
