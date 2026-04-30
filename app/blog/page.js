@@ -48,7 +48,6 @@ function Nav() {
           <a key={n.h} href={n.h} style={{fontFamily:"Cairo",fontSize:13,fontWeight:700,color:n.h==="/about"?"#ff2d7a":"rgba(240,244,255,.5)",textDecoration:"none",transition:"color .3s"}}
             onMouseEnter={e=>e.target.style.color="#f0f4ff"} onMouseLeave={e=>e.target.style.color=n.h==="/about"?"#ff2d7a":"rgba(240,244,255,.5)"}>{n.l}</a>
         ))}
-        <a href="https://wa.me/9647734383431" target="_blank" style={{fontFamily:"Cairo",fontSize:13,fontWeight:700,padding:"8px 20px",background:"#ff2d7a",color:"#fff",borderRadius:4,textDecoration:"none",boxShadow:"0 0 16px rgba(255,45,122,.3)"}}>تواصل 💬</a>
       </div>
     </nav>
   );
