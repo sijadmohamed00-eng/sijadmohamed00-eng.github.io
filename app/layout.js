@@ -1,7 +1,28 @@
 export const metadata = {
-  title: "IQR | لإدارة وتطوير المطاعم في العراق",
-  description: "الشركة الأولى لإدارة وتطوير المطاعم في العراق — نحول فوضى مطعمك إلى دقة هندسية ذاتية",
-  icons: { icon: "/favicon.ico" },
+  title: "IQR | الشركة الأولى لإدارة وتطوير المطاعم في العراق",
+  description: "نحول فوضى مطعمك إلى دقة هندسية ذاتية — نظام متكامل لإدارة الطلبات، المخزون، الموظفين، والتحليلات. سواء كنت تفتح أول فرع أو تدير سلسلة كاملة في العراق.",
+  keywords: ["إدارة مطاعم العراق", "نظام مطاعم", "تطوير مطاعم بغداد", "iqr", "إدارة مطعم", "نظام كاشير عراق", "تحسين مطعم"],
+  authors: [{ name: "IQR", url: "https://iqrhq.me" }],
+  creator: "IQR",
+  metadataBase: new URL("https://iqrhq.me"),
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "IQR | الشركة الأولى لإدارة وتطوير المطاعم في العراق",
+    description: "نحول فوضى مطعمك إلى دقة هندسية ذاتية — نظام متكامل لإدارة المطاعم في العراق",
+    url: "https://iqrhq.me",
+    siteName: "IQR",
+    locale: "ar_IQ",
+    type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "IQR لإدارة المطاعم" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "IQR | إدارة وتطوير المطاعم في العراق",
+    description: "نحول فوضى مطعمك إلى دقة هندسية ذاتية",
+    images: ["/og-image.png"],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  icons: { icon: "/favicon.ico", apple: "/apple-icon.png" },
 };
 
 export default function RootLayout({ children }) {
