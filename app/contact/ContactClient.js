@@ -36,9 +36,9 @@ function Nav() {
         IQR<span style={{color:"#1a4fc4",fontSize:13,fontWeight:400,fontFamily:"Cairo",marginRight:6}}>لإدارة المطاعم</span>
       </a>
       <div style={{display:"flex",gap:24,alignItems:"center"}}>
-        {[{h:"/",l:"الرئيسية"},{h:"/about",l:"من نحن"},{h:"/blog",l:"المدونة"},{h:"/contact",l:"تواصل"}].map(n=>(
-          <a key={n.h} href={n.h} style={{fontFamily:"Cairo",fontSize:13,fontWeight:700,color:n.h==="/contact"?"#1a4fc4":"rgba(240,244,255,.5)",textDecoration:"none",transition:"color .3s"}}
-            onMouseEnter={e=>e.target.style.color="#f0f4ff"} onMouseLeave={e=>e.target.style.color=n.h==="/contact"?"#1a4fc4":"rgba(240,244,255,.5)"}>{n.l}</a>
+        {[{h:"/",l:"الرئيسية"},{h:"/about/",l:"من نحن"},{h:"/blog/",l:"المدونة"},{h:"/contact/",l:"تواصل"}].map(n=>(
+          <a key={n.h} href={n.h} style={{fontFamily:"Cairo",fontSize:13,fontWeight:700,color:n.h==="/contact/"?"#1a4fc4":"rgba(240,244,255,.5)",textDecoration:"none",transition:"color .3s"}}
+            onMouseEnter={e=>e.target.style.color="#f0f4ff"} onMouseLeave={e=>e.target.style.color=n.h==="/contact/"?"#1a4fc4":"rgba(240,244,255,.5)"}>{n.l}</a>
         ))}
 
       </div>

@@ -167,7 +167,7 @@ function Nav() {
         <span style={{ width: 8, height: 8, background: "#1a4fc4", borderRadius: "50%", animation: "blink 2s infinite" }} />IQR
       </a>
       <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-        <a href="/blog" style={{ fontFamily: "Cairo", fontSize: 13, fontWeight: 700, color: "rgba(240,244,255,.5)", textDecoration: "none" }}>â Ø§ÙÙØ¯ÙÙØ©</a>
+        <a href="/blog/" style={{ fontFamily: "Cairo", fontSize: 13, fontWeight: 700, color: "rgba(240,244,255,.5)", textDecoration: "none" }}>â Ø§ÙÙØ¯ÙÙØ©</a>
         <a href="https://wa.me/9647734383431" target="_blank" style={{ fontFamily: "Cairo", fontSize: 13, fontWeight: 700, padding: "8px 20px", background: "#1a4fc4", color: "#fff", borderRadius: 4, textDecoration: "none" }}>ØªÙØ§ØµÙ ð¬</a>
       </div>
     </nav>
@@ -186,7 +186,7 @@ export default function BlogPostClient({ params }) {
       <article style={{ maxWidth: 760, margin: "0 auto", padding: "120px 48px 100px", position: "relative", zIndex: 2, direction: "rtl", animation: "fadeUp .8s ease both" }}>
         <div style={{ marginBottom: 48 }}>
           <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 24 }}>
-            <a href="/blog" style={{ fontFamily: "Cairo", fontSize: 12, color: "rgba(240,244,255,.3)", textDecoration: "none" }}>Ø§ÙÙØ¯ÙÙØ©</a>
+            <a href="/blog/" style={{ fontFamily: "Cairo", fontSize: 12, color: "rgba(240,244,255,.3)", textDecoration: "none" }}>Ø§ÙÙØ¯ÙÙØ©</a>
             <span style={{ color: "rgba(240,244,255,.2)" }}>âº</span>
             <span style={{ fontFamily: "Cairo", fontSize: 12, color: post.categoryColor, fontWeight: 700 }}>{post.category}</span>
           </div>
@@ -206,7 +206,7 @@ export default function BlogPostClient({ params }) {
           <a href="https://wa.me/9647734383431" target="_blank" style={{ display: "inline-flex", alignItems: "center", gap: 10, fontFamily: "Cairo", fontSize: 14, fontWeight: 700, padding: "14px 36px", background: "#1a4fc4", color: "#fff", borderRadius: 8, textDecoration: "none", boxShadow: "0 0 30px rgba(26,79,196,.3)" }}>ð² ØªÙØ§ØµÙ Ø¹ÙÙ ÙØ§ØªØ³Ø§Ø¨</a>
         </div>
         <div style={{ marginTop: 40, textAlign: "center" }}>
-          <a href="/blog" style={{ fontFamily: "Cairo", fontSize: 13, color: "rgba(240,244,255,.3)", textDecoration: "none" }}>â Ø§ÙØ¹ÙØ¯Ø© ÙÙÙØ¯ÙÙØ©</a>
+          <a href="/blog/" style={{ fontFamily: "Cairo", fontSize: 13, color: "rgba(240,244,255,.3)", textDecoration: "none" }}>â Ø§ÙØ¹ÙØ¯Ø© ÙÙÙØ¯ÙÙØ©</a>
         </div>
       </article>
       <footer style={{ background: "#000510", borderTop: "1px solid rgba(255,255,255,.05)", padding: "40px 48px", textAlign: "center", position: "relative", zIndex: 2 }}>

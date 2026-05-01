@@ -44,9 +44,9 @@ function Nav() {
         IQR<span style={{color:"#1a4fc4",fontSize:13,fontWeight:400,fontFamily:"Cairo",marginRight:6}}>لإدارة المطاعم</span>
       </a>
       <div style={{display:"flex",gap:24}}>
-        {[{h:"/",l:"الرئيسية"},{h:"/about",l:"من نحن"},{h:"/blog",l:"المدونة"},{h:"/contact",l:"تواصل"}].map(n=>(
-          <a key={n.h} href={n.h} style={{fontFamily:"Cairo",fontSize:13,fontWeight:700,color:n.h==="/about"?"#1a4fc4":"rgba(240,244,255,.5)",textDecoration:"none",transition:"color .3s"}}
-            onMouseEnter={e=>e.target.style.color="#f0f4ff"} onMouseLeave={e=>e.target.style.color=n.h==="/about"?"#1a4fc4":"rgba(240,244,255,.5)"}>{n.l}</a>
+        {[{h:"/",l:"الرئيسية"},{h:"/about/",l:"من نحن"},{h:"/blog/",l:"المدونة"},{h:"/contact/",l:"تواصل"}].map(n=>(
+          <a key={n.h} href={n.h} style={{fontFamily:"Cairo",fontSize:13,fontWeight:700,color:n.h==="/about/"?"#1a4fc4":"rgba(240,244,255,.5)",textDecoration:"none",transition:"color .3s"}}
+            onMouseEnter={e=>e.target.style.color="#f0f4ff"} onMouseLeave={e=>e.target.style.color=n.h==="/about/"?"#1a4fc4":"rgba(240,244,255,.5)"}>{n.l}</a>
         ))}
       </div>
     </nav>
@@ -190,7 +190,7 @@ export default function AboutPage() {
           <p style={{fontFamily:"Cairo",fontSize:16,color:"rgba(240,244,255,.45)",marginBottom:40,lineHeight:1.8}}>محادثة مجانية نفهم فيها وضعك — بدون التزام</p>
           <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap"}}>
             <a href="https://wa.me/9647734383431" target="_blank" style={{fontFamily:"Cairo",fontSize:14,fontWeight:700,padding:"16px 44px",background:"#1a4fc4",color:"#fff",borderRadius:4,textDecoration:"none",boxShadow:"0 0 40px rgba(26,79,196,.4)"}}>📲 تواصل على واتساب</a>
-            <a href="/contact" style={{fontFamily:"Cairo",fontSize:14,fontWeight:700,padding:"15px 44px",background:"transparent",color:"rgba(240,244,255,.6)",border:"1px solid rgba(255,255,255,.1)",borderRadius:4,textDecoration:"none"}}>راسلنا</a>
+            <a href="/contact/" style={{fontFamily:"Cairo",fontSize:14,fontWeight:700,padding:"15px 44px",background:"transparent",color:"rgba(240,244,255,.6)",border:"1px solid rgba(255,255,255,.1)",borderRadius:4,textDecoration:"none"}}>راسلنا</a>
           </div>
         </div>
       </section>

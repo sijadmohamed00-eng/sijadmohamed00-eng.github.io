@@ -32,7 +32,7 @@ function Nav() {
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
   }, []);
-  const links = [{ h: "/", l: "الرئيسية" }, { h: "/about", l: "من نحن" }, { h: "/blog", l: "المدونة" }, { h: "/contact", l: "تواصل" }];
+  const links = [{ h: "/", l: "الرئيسية" }, { h: "/about/", l: "من نحن" }, { h: "/blog/", l: "المدونة" }, { h: "/contact/", l: "تواصل" }];
   return (
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: "20px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", background: scrolled ? "rgba(0,8,20,.95)" : "transparent", backdropFilter: scrolled ? "blur(24px)" : "none", borderBottom: scrolled ? "1px solid rgba(26,79,196,.1)" : "none", transition: "all .4s ease", direction: "rtl" }}>
       <a href="/" style={{ fontFamily: "Space Mono", fontSize: 20, fontWeight: 700, color: "#f0f4ff", textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
@@ -163,7 +163,7 @@ export default function AboutClient() {
           <p style={{ fontFamily: "Cairo", fontSize: 16, color: "rgba(240,244,255,.45)", marginBottom: 40, lineHeight: 1.8 }}>محادثة مجانية نفهم فيها وضعك — بدون التزام</p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <a href="https://wa.me/9647734383431" target="_blank" style={{ fontFamily: "Cairo", fontSize: 14, fontWeight: 700, padding: "16px 44px", background: "#1a4fc4", color: "#fff", borderRadius: 4, textDecoration: "none", boxShadow: "0 0 40px rgba(26,79,196,.4)" }}>📲 تواصل على واتساب</a>
-            <a href="/contact" style={{ fontFamily: "Cairo", fontSize: 14, fontWeight: 700, padding: "15px 44px", background: "transparent", color: "rgba(240,244,255,.6)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 4, textDecoration: "none" }}>راسلنا</a>
+            <a href="/contact/" style={{ fontFamily: "Cairo", fontSize: 14, fontWeight: 700, padding: "15px 44px", background: "transparent", color: "rgba(240,244,255,.6)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 4, textDecoration: "none" }}>راسلنا</a>
           </div>
         </div>
       </section>
