@@ -248,15 +248,16 @@ function Nav() {
     <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:100,padding:"16px 32px",display:"flex",alignItems:"center",justifyContent:"space-between",
       background:scrolled||mobileOpen?"rgba(0,8,20,.97)":"transparent",backdropFilter:scrolled||mobileOpen?"blur(24px)":"none",
       borderBottom:scrolled||mobileOpen?"1px solid rgba(255,45,122,.1)":"none",transition:"all .4s ease",direction:"rtl"}}>
-      <a href="/" style={{fontFamily:"Space Mono",fontSize:20,fontWeight:700,color:"#f0f4ff",letterSpacing:".08em",textDecoration:"none",display:"flex",alignItems:"center",gap:10,cursor:"none"}}>
-        <span style={{width:8,height:8,background:"#ff2d7a",borderRadius:"50%",animation:"blink 2s infinite"}}/>
-        IQR<span style={{color:"#ff2d7a",fontSize:13,fontWeight:400,fontFamily:"Cairo",marginRight:6}}>لإدارة المطاعم</span>
+      <a href="/" style={{textDecoration:"none",display:"flex",alignItems:"center",gap:10,cursor:"none"}}>
+        <img src="/logo.png" alt="IQR" style={{height:38,width:"auto",filter:"brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(290deg)",transition:"filter .3s"}}
+          onMouseEnter={e=>e.currentTarget.style.filter="brightness(0) invert(1)"}
+          onMouseLeave={e=>e.currentTarget.style.filter="brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(290deg)"}/>
       </a>
       <div className="nav-links-wrap" style={{display:"flex",alignItems:"center",gap:8}}>
         {pageLinks.map(({h,l}) => (
-          <a key={h} href={h} style={{fontFamily:"Cairo",fontSize:13,fontWeight:700,color:"#ff2d7a",textDecoration:"none",letterSpacing:".06em",cursor:"none",transition:"all .25s",padding:"7px 16px",border:"1px solid rgba(255,45,122,.35)",borderRadius:6,background:"rgba(255,45,122,.07)"}}
-            onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,45,122,.18)";e.currentTarget.style.borderColor="#ff2d7a";e.currentTarget.style.transform="translateY(-1px)"}}
-            onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,45,122,.07)";e.currentTarget.style.borderColor="rgba(255,45,122,.35)";e.currentTarget.style.transform=""}}>{l}</a>
+          <a key={h} href={h} style={{fontFamily:"Cairo",fontSize:13,fontWeight:700,color:"#6ea8fe",textDecoration:"none",letterSpacing:".06em",cursor:"none",transition:"all .25s",padding:"7px 16px",border:"1px solid rgba(110,168,254,.35)",borderRadius:6,background:"rgba(110,168,254,.07)"}}
+            onMouseEnter={e=>{e.currentTarget.style.background="rgba(110,168,254,.18)";e.currentTarget.style.borderColor="#6ea8fe";e.currentTarget.style.transform="translateY(-1px)"}}
+            onMouseLeave={e=>{e.currentTarget.style.background="rgba(110,168,254,.07)";e.currentTarget.style.borderColor="rgba(110,168,254,.35)";e.currentTarget.style.transform=""}}>{l}</a>
         ))}
         <span style={{width:1,height:18,background:"rgba(255,255,255,.1)",display:"inline-block",margin:"0 12px"}}/>
         {scrollLinks.map(({h,l}) => (
@@ -280,7 +281,7 @@ function Nav() {
     {mobileOpen && (
       <div style={{position:"fixed",top:"64px",left:0,right:0,zIndex:99,background:"rgba(0,8,20,.97)",backdropFilter:"blur(24px)",borderBottom:"1px solid rgba(255,45,122,.15)",padding:"20px 24px",display:"flex",flexDirection:"column",gap:10,direction:"rtl",animation:"fadeIn .2s ease"}}>
         {pageLinks.map(({h,l}) => (
-          <a key={h} href={h} onClick={()=>setMobileOpen(false)} style={{fontFamily:"Cairo",fontSize:15,fontWeight:700,color:"#ff2d7a",textDecoration:"none",padding:"12px 16px",border:"1px solid rgba(255,45,122,.3)",borderRadius:8,background:"rgba(255,45,122,.07)",textAlign:"right"}}>{l}</a>
+          <a key={h} href={h} onClick={()=>setMobileOpen(false)} style={{fontFamily:"Cairo",fontSize:15,fontWeight:700,color:"#6ea8fe",textDecoration:"none",padding:"12px 16px",border:"1px solid rgba(110,168,254,.3)",borderRadius:8,background:"rgba(110,168,254,.07)",textAlign:"right"}}>{l}</a>
         ))}
         <div style={{height:1,background:"rgba(255,255,255,.07)",margin:"4px 0"}}/>
         {scrollLinks.map(({h,l}) => (
@@ -779,7 +780,9 @@ function Footer() {
     <footer style={{background:"#000510",borderTop:"1px solid rgba(255,255,255,.05)",padding:"60px 48px",position:"relative",zIndex:2}}>
       <div className="footer-grid-inner" style={{maxWidth:1400,margin:"0 auto",display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr",gap:60,alignItems:"start",direction:"rtl"}}>
         <div>
-          <a href="#" style={{fontFamily:"Space Mono",fontSize:20,fontWeight:700,color:"#f0f4ff",display:"block",marginBottom:16,letterSpacing:".08em",textDecoration:"none",cursor:"none"}}>IQR</a>
+          <a href="/" style={{display:"block",marginBottom:16,textDecoration:"none",cursor:"none"}}>
+            <img src="/logo.png" alt="IQR" style={{height:32,width:"auto",filter:"brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(290deg)"}}/>
+          </a>
           <p style={{fontFamily:"Cairo",fontSize:13,color:"rgba(240,244,255,.35)",lineHeight:1.8,marginBottom:16}}>لإدارة وتطوير المطاعم — نحول فوضى مطعمك إلى دقة هندسية ذاتية في العراق.</p>
           <div style={{display:"flex",gap:10,marginTop:8}}>
             {[
